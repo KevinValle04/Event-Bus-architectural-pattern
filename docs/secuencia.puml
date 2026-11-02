@@ -1,0 +1,29 @@
+@startuml
+title Secuencia - Pedido de la Mesa 5 y Banda
+actor Cliente
+participant SistemaDePedidos
+participant EventBus
+participant Barra
+participant Cocina
+participant Banda
+participant SistemaDeSonido
+participant PanelLED
+participant SistemaDeHumo
+
+Cliente -> SistemaDePedidos : realizarPedido(Mesa 5, [cerveza, hamburguesa])
+SistemaDePedidos -> EventBus : publicar(PedidoRealizadoEvent)
+EventBus -> Barra : alRecibir(PedidoRealizadoEvent)
+EventBus -> Cocina : alRecibir(PedidoRealizadoEvent)
+EventBus -> PanelLED : alRecibir(PedidoRealizadoEvent)
+Barra -> Barra : preparar (2 s)
+Barra -> EventBus : publicar(BebidaServidaEvent)
+EventBus -> PanelLED : alRecibir(BebidaServidaEvent)
+Cocina -> Cocina : cocinar (5 s)
+Cocina -> EventBus : publicar(ComidaPreparadaEvent)
+EventBus -> PanelLED : alRecibir(ComidaPreparadaEvent)
+== Banda ==
+Banda -> EventBus : publicar(BandaTocandoEvent)
+EventBus -> SistemaDeSonido : alRecibir(BandaTocandoEvent)
+EventBus -> PanelLED : alRecibir(BandaTocandoEvent)
+EventBus -> SistemaDeHumo : alRecibir(BandaTocandoEvent)\n[solo "Through the Fire and Flames"]
+@enduml

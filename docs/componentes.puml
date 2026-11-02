@@ -1,0 +1,21 @@
+@startuml
+title Diagrama de Componentes - Taberna con Event Bus
+component [EventBus] as bus
+component [SistemaDePedidos] as ped
+component [Barra] as barra
+component [Cocina] as cocina
+component [Banda] as banda
+component [SistemaDeSonido] as sonido
+component [PanelLED] as led
+component [SistemaDeHumo] as humo #LightGreen
+
+ped --> bus : publica PedidoRealizadoEvent
+barra --> bus : publica BebidaServidaEvent
+cocina --> bus : publica ComidaPreparadaEvent
+banda --> bus : publica BandaTocandoEvent
+bus ..> barra : PedidoRealizadoEvent
+bus ..> cocina : PedidoRealizadoEvent
+bus ..> sonido : BandaTocandoEvent
+bus ..> led : todos los eventos
+bus ..> humo : BandaTocandoEvent
+@enduml

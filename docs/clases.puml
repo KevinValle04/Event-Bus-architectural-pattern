@@ -1,0 +1,38 @@
+@startuml
+title Diagrama de Clases - Event Bus
+interface Evento
+interface "Suscriptor<T extends Evento>" as Suscriptor {
+  +alRecibir(evento: T)
+}
+class EventBus {
+  -suscriptores: Map<Class, List<Suscriptor>>
+  +suscribir(tipo: Class<T>, s: Suscriptor<T>)
+  +desuscribir(tipo: Class<T>, s: Suscriptor<T>)
+  +publicar(evento: Evento)
+}
+class PedidoRealizadoEvent <<record>> { mesaId; pedidoId; items }
+class BebidaServidaEvent <<record>> { mesaId; bebida }
+class ComidaPreparadaEvent <<record>> { pedidoId; plato }
+class BandaTocandoEvent <<record>> { nombreBanda; nombreCancion; duracion }
+Evento <|.. PedidoRealizadoEvent
+Evento <|.. BebidaServidaEvent
+Evento <|.. ComidaPreparadaEvent
+Evento <|.. BandaTocandoEvent
+EventBus o-- Suscriptor
+EventBus ..> Evento
+
+class SistemaDePedidos
+class Barra
+class Cocina
+class Banda
+class SistemaDeSonido
+class PanelLED
+class SistemaDeHumo
+SistemaDePedidos --> EventBus
+Barra --> EventBus
+Cocina --> EventBus
+Banda --> EventBus
+SistemaDeSonido --> EventBus
+PanelLED --> EventBus
+SistemaDeHumo --> EventBus
+@enduml
